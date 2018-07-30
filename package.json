@@ -10,6 +10,7 @@
   "author": "iddar olivares <iddar@dbug.mx> (https://github.com/iddar)",
   "license": "ISC",
   "devDependencies": {
-    "parcel-bundler": "^1.9.7"
+    "parcel-bundler": "^1.9.7",
+    "standard": "^11.0.1"
   }
 }

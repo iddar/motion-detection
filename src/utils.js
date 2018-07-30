@@ -1,14 +1,19 @@
 
-const sensitivityDefault = 100
+const samples = 100
+const pixelWidth = 4
+const sensitivityDefault = 50
 
-const width = 640
-const height = 480
+// state
+let buffer = []
+let count = 0
 
-const getRow = i => Math.floor(i / width)
-const getColumn = i => Math.floor(i - (getRow(i) * width))
+const getPixel = (i, data) => data.slice(i * pixelWidth, (i * pixelWidth) + pixelWidth - 1)
 
 // pixels compare
-export function pixelsAreDifferent (pixel, oldPixel, sensitivity = sensitivityDefault) {
+export function pixelsAreDifferent (index, image, prevImage, sensitivity = sensitivityDefault) {
+  let pixel = getPixel(index, image)
+  let oldPixel = getPixel(index, prevImage)
+
   let diff = pixel.some((color, idxColor) => {
     let distance = Math.abs(color - oldPixel[idxColor])
     return distance > sensitivity
@@ -17,29 +22,30 @@ export function pixelsAreDifferent (pixel, oldPixel, sensitivity = sensitivityDe
   return diff
 }
 
-// Draw Canvas from Pixels Array
-export function drawCanvas (pixelsArray, ctxCanvas) {
-  ctxCanvas.clearRect(0, 0, ctxCanvas.canvas.width, ctxCanvas.canvas.height); // Clears the canvas
-  // ctx.fillRect(x, y, width, height)
-  pixelsArray.forEach((pixel, idx) => {
-    ctxCanvas.fillStyle = pixel ? '#ffffff': '#000000';
-    ctxCanvas.fillRect(getColumn(idx), getRow(idx), 1, 1);
-  });
-}
-
 export function loop(callback, fps) {
-  setTimeout(() => {
+  // setTimeout(() => {
     callback()
     requestAnimationFrame(loop.bind(null, callback, fps))
-  }, 1000 / fps)
+  // }, 1000 / fps)
 }
 
-export function initVideo (container) {
-  // Attach the video stream to the video element and autoplay.
-  const handleSuccess = stream => container.srcObject = stream
-  
-  navigator
-    .mediaDevices
-    .getUserMedia({video: true})
-    .then(handleSuccess)
+export function recordDiiff (record, diff, callback) {
+  if (record) {
+    buffer.push(diff)
+    count++
+
+    if (count === samples) {
+      callback(parseBuffer(buffer))
+      count = 0
+      buffer = []
+    }
+  }
+}
+
+function parseBuffer (buffer) {
+  return buffer.reduce((acc, element) => {
+    return element.map((val, index) => {
+      return acc[index] === 1 ? 1 : val
+    })
+  }, [])
 }
