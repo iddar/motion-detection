@@ -1,0 +1,15 @@
+{
+  "name": "motion-camera",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "iddar olivares <iddar@dbug.mx> (https://github.com/iddar)",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.9.7"
+  }
+}
