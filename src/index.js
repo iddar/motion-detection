@@ -49,8 +49,9 @@ function draw () {
   const { data } = context.getImageData(0, 0, width, height)
   let diff = imageProsessing(data)
 
-  drawCanvas(diff, contextDiff)
+  // drawCanvas(diff, contextDiff)
   recordDiiff(record, diff, data => {
+    drawCanvas(data, contextDiff)
     console.log('Done:', data)
     record = false
   })

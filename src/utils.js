@@ -45,7 +45,7 @@ export function recordDiiff (record, diff, callback) {
 function parseBuffer (buffer) {
   return buffer.reduce((acc, element) => {
     return element.map((val, index) => {
-      return acc[index] === 1 ? 1 : val
+      return acc[index] === 0 ? 0 : val
     })
   }, [])
 }
