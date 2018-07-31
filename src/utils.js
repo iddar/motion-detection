@@ -22,10 +22,10 @@ export function pixelsAreDifferent (index, image, prevImage, sensitivity = sensi
   return diff
 }
 
-export function loop(callback, fps) {
+export function loop (callback, fps) {
   // setTimeout(() => {
-    callback()
-    requestAnimationFrame(loop.bind(null, callback, fps))
+  callback()
+  window.requestAnimationFrame(loop.bind(null, callback, fps))
   // }, 1000 / fps)
 }
 

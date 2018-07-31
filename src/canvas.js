@@ -16,8 +16,7 @@ export function drawCanvas (pixelsArray, ctxCanvas) {
 }
 
 // Attach the video stream to the video element and autoplay.
-export function initVideo (container) {
-  const player = document.getElementById(container)
+export function initVideo (player) {
   const handleSuccess = stream => { player.srcObject = stream }
 
   navigator

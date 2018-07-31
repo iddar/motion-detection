@@ -2,6 +2,7 @@
 import { loop, pixelsAreDifferent, recordDiiff } from './utils'
 import { drawCanvas, initVideo } from './canvas'
 
+const player = document.getElementById('player')
 const snapshotCanvas = document.getElementById('snapshot')
 const diffCanvas = document.getElementById('diffCanvas')
 const captureButton = document.getElementById('capture')
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', onLoad, false)
 function imageProsessing (image) {
   if (prevImage == null) prevImage = image
   let imageDiff = []
-  
+
   for (let index = 0; index < imageLength; index++) {
     let isDifferent = pixelsAreDifferent(index, image, prevImage)
     imageDiff.push(isDifferent ? 0 : 1)
@@ -44,19 +45,19 @@ function setSize () {
 
 function draw () {
   context.drawImage(player, 0, 0, snapshotCanvas.width, snapshotCanvas.height)
-  
+
   const { data } = context.getImageData(0, 0, width, height)
   let diff = imageProsessing(data)
-  
-  recordDiiff(record, diff, data => { 
+
+  drawCanvas(diff, contextDiff)
+  recordDiiff(record, diff, data => {
     console.log('Done:', data)
-    drawCanvas(data, contextDiff)
     record = false
   })
 }
 
 function onLoad () {
-  initVideo('player') // create video stream
+  initVideo(player) // create video stream
   setSize() // set equal size for all elements
   loop(draw, fps) // main loop
 }
